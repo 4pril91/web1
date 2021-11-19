@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString)
+        const boardId = urlParams.get("boardId")
+        $(document).ready(function () {
+            get_Update()
+        })
+        function get_Update() {
+            console.log("test")
+            $.ajax({
+                type: "GET",
+                url: `/updateApi/board/${boardId}`,
+                data: {},
+                success: function (response) {
+                    let boardUpdate = response["detail"];
+                    $('#writer').val(boardUpdate['writer']);
+                    $('#title').val(boardUpdate['title']);
+                    $('#content').val(boardUpdate['content']);
+                }
+            })
+        }
+
+        function post_Update() {
+
+            let writer = $('#writer').val();
+            let passwd = $('#passwd').val();
+            let title = $('#title').val();
+            let content = $('#content').val();
+            $.ajax({
+                type: "POST",
+                url: `/updateApi/board/${boardId}`,
+                data: {
+                    'writer': writer,
+                    'passwd': passwd,
+                    'title': title,
+                    'content': content
+                },
+                success: function (response) {
+                    console.log(response['result'])
+                    alert(response['result'])
+                    if (response['result'] == '수정되었습니다.') {
+                        window.location.href = "/list"
+                    }
+                }
+            })
+        }
+
+        function post_Delete() {
+            let writer = $('#writer').val();
+            let passwd= $('#passwd').val();
+            let title = $('#title').val();
+            let content = $('#content').val();
+            $.ajax({
+                type: "POST",
+                url: `/updateApi/board/${boardId}/delete`,
+                data: {
+                    'writer': writer,
+                    'passwd': passwd,
+                    'title': title,
+                    'content': content
+                },
+                success: function (response) {
+                    console.log(response['result'])
+                    alert(response['result'])
+                    if (response['result'] == '삭제되었습니다.') {
+                        window.location.href = "/list"
+                    }
+                    
+                }
+            })
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="tabs is-medium">
+        <ul>
+          <li class="is-active" onclick="location.href='/'"><a>작성페이지</a></li>
+          <li class="is-active" onclick="location.href='/list'"><a>목록페이지</a></li>
+        </ul>
+      </div>
+    <section class="section">
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+                <p class="title">
+                    게시글 수정 페이지
+                </p>
+            </div>
+        </section>
+    </section>
+
+
+    <section class="section">
+
+        <div class="field">
+            <label class="label">작성자명</label>
+            <input id="writer" class="input is-info" type="text" placeholder="작성자명 입력">
+        </div>
+
+        <div class="field">
+            <label class="label">비밀번호</label>
+            <input id="passwd" class="input is-info" type="password" placeholder="비밀번호 입력">
+        </div>
+
+        <div class="field">
+            <label class="label">제목</label>
+            <input id="title" class="input is-info" type="text" placeholder="제목 입력">
+        </div>
+
+        <div class="field">
+            <label class="label">내용</label>
+            <textarea id="content" class="textarea is-info" placeholder="내용 입력"></textarea>
+        </div>
+
+        <div class="buttons">
+            <button class="button is-info" onclick="post_Update()">수정하기</button>
+            <button class="button is-info" onclick="post_Delete()">삭제하기</button>
+        </div>
+
+    </section>
+
+</body>
+
+</html>

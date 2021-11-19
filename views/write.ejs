@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        function writeBoard() {
+            
+            let date = new Date();
+            let title = $('#title').val();
+            let writer = $('#writer').val();
+            let passwd = $('#passwd').val();
+            let content = $('#content').val();
+
+            $.ajax({
+                type: "POST",
+                url: `/writeApi/board`,
+                data: {
+                    'title': title,
+                    'writer': writer,
+                    'passwd': passwd,
+                    'content': content,
+                    'date': date
+                },
+                success: function (response) {
+                    window.location.href = "/list"
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="tabs is-medium">
+        <ul>
+          <li class="is-active" onclick="location.href='/'"><a>작성페이지</a></li>
+          <li class="is-active" onclick="location.href='/list'"><a>목록페이지</a></li>
+        </ul>
+      </div>
+    <section class="section">
+        <section class="hero is-small is-danger">
+            <div class="hero-body">
+                <p class="title">
+                    게시글 작성 페이지
+                </p>
+            </div>
+        </section>
+    </section>
+
+
+    <section class="section">
+
+        <div class="field">
+            <label class="label">작성자명</label>
+            <input id="writer" class="input is-danger" type="text" placeholder="작성자명 입력">
+        </div>
+
+        <div class="field">
+            <label class="label">비밀번호</label>
+            <input id="passwd" class="input is-danger" type="password" placeholder="비밀번호 입력">
+        </div>
+
+        <div class="field">
+            <label class="label">제목</label>
+            <input id="title" class="input is-danger" type="text" placeholder="제목 입력">
+        </div>
+
+        <div class="field">
+            <label class="label">내용</label>
+            <textarea id="content" class="textarea is-danger" placeholder="내용 입력"></textarea>
+        </div>
+
+        <div class="buttons">
+            <button class="button is-danger" onclick="writeBoard();">작성하기</button>
+            
+        </div>
+
+    </section>
+
+</body>
+
+</html>

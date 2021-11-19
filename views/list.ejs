@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#container').empty()
+            list_View()
+        })
+        function list_View() {
+            $.ajax({
+                type: "GET",
+                url: `/listApi/board`,
+                data: {},
+                success: function (response) {
+                    console.log(response['boards'])
+                    let boards = response["boards"]
+                    for (let i = 0; i < boards.length; i++) {
+                        let htmlTemp = `
+                        <div class="box">
+                            
+                            <div class="media-content">
+                                <div class="content">
+                                <p>
+                                    <strong style="font-size: 25px;">${boards[i]["writer"]}</strong> <div><strong>${boards[i]["title"]}</strong><small style="margin: 20px;">${boards[i]["date"].substring(0, 10)}</small></div> 
+                                    <br>
+                                    ${boards[i]["content"]}
+                                </p>
+                                <div class="buttons">
+                                    <button class="button is-info" onclick="location.href='/update?boardId=${boards[i]["boardId"]}'">게시글 수정</button>
+                                    <button class="button is-dark" onclick="location.href='/detail?boardId=${boards[i]["boardId"]}'">게시글 보기</button>
+                                </div>
+                                <nav class="level is-mobile">
+                                <div class="level-left">
+                                    <a class="level-item" aria-label="reply">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-reply" aria-hidden="true"></i>
+                                    </span>
+                                    </a>
+                                    <a class="level-item" aria-label="retweet">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-retweet" aria-hidden="true"></i>
+                                    </span>
+                                    </a>
+                                    <a class="level-item" aria-label="like">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-heart" aria-hidden="true"></i>
+                                    </span>
+                                    </a>
+                                </div>
+                                </nav>
+                            </div>
+                            </article>
+                        </div>
+                        `
+
+                        $('#container').append(htmlTemp)
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div class="tabs is-medium">
+        <ul>
+          <li class="is-active" onclick="location.href='/'"><a>작성페이지</a></li>
+          <li class="is-active" onclick="location.href='/list'"><a>목록페이지</a></li>
+        </ul>
+      </div>
+    <section class="section">
+        <section class="hero is-small is-warning">
+            <div class="hero-body">
+                <p class="title">
+                    게시글 목록 페이지
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container" id="container">
+            </div>
+        </section>
+
+</body>
+
+
+</section>
+
+
+
+
+</section>
+
+</body>
+
+</html>

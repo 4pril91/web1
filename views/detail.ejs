@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString)
+        const boardId = urlParams.get("boardId")
+
+        $(document).ready(function () {
+            $('#container').empty()
+            detail_View()
+        })
+        function detail_View() {
+            console.log("test")
+            $.ajax({
+                type: "GET",
+                url: `/updateApi/board/${boardId}`,
+                data: {},
+                success: function (response) {
+                    let detailBoard = response["detail"];
+                    console.log(detailBoard)
+                    let temphtml = `
+                                <section class="section">
+                                    <article class="message is-dark">
+                                        <div class="message-header">
+                                            <p>${detailBoard["title"]}<div style="text-align: right;">${detailBoard["date"].substring(0, 10)}</p>${detailBoard["writer"]}</p></div>
+                                            
+                                        </div>
+                                        <div class="message-body">
+                                            ${detailBoard["content"]}
+                                        </div>
+                                    </article>
+                                </section>
+
+                    `
+                    $('#table').append(temphtml)
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div class="tabs is-medium">
+        <ul>
+            <li class="is-active" onclick="location.href='/'"><a>작성페이지</a></li>
+            <li class="is-active" onclick="location.href='/list'"><a>목록페이지</a></li>
+        </ul>
+    </div>
+    <section class="section">
+        <section id="table">
+            <section class="hero is-small is-dark">
+                <div class="hero-body">
+                    <p class="title">
+                        게시글 조회 페이지
+                    </p>
+                </div>
+            </section>
+        </section>
+    </section>
+</body>
+
+
+</section>
+
+
+
+
+</section>
+
+</body>
+
+</html>
